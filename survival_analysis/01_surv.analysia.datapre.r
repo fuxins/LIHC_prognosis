@@ -61,6 +61,18 @@ as.data.frame(t(data.frame(rna,row.names = 1)))->rna_01
 rna_01%>%
   mutate(Patient_id=row.names(rna_01))->rna_02
 
+rna_02%>%
+  mutate(type=fun_tn_type(Patient_id))%>%
+  filter(type =="01")%>%
+  select(-type)->rna_03
+
+rna_03$Patient_id <- fun_barcode(rna_03$Patient_id)
+rna_03$Patient_id <- stringr::str_replace_all(rna_03$Patient_id,"\\.","-")
+
+clinical%>%
+  inner_join(rna_03)->rna_matrix
+
+
 #fun_expr_survival_merge <- function(filter_expr, clinical){
 
 
