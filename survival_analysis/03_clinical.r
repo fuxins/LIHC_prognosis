@@ -13,5 +13,6 @@ upper_barcode[1] <- colnames(clinical)[1]
 
 colnames(clinical) <- upper_barcode
 
-clinical%>%
-  select('Hybridization REF',mir_matrix$Patient_id)->c_01
+readr::write_rds(clinical,file.path(mir_matrix_path,"03_clinical.rds"))
+
+                 
