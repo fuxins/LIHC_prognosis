@@ -8,7 +8,8 @@ row_mir <- readr::read_tsv(file.path(row_mir_path,"LIHC.miRseq_mature_RPM.txt"))
 
 filter_valid_data <- function(obs)
 {
-  zero_rate <- sum(obs==0,na.rm = T)/length(obs)
+#  obs_0 <- ifelse(is.na(obs),0,obs)#缺失值太多了
+  zero_rate <- sum(obs_0==0,na.rm = T)/length(obs_0)
   score <- ifelse(zero_rate>0.5,0,1)
   return(score)
 }
@@ -28,6 +29,7 @@ val_mir <- mutate(row_mir,score=0)
 for (i in 1:nrow(row_mir)){
   val_mir[i,]$score <- filter_valid_data(row_mir[i,])
 }
+
 
 val_mir%>%
   filter(score==1)%>%
